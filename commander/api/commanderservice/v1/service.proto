@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+package flowshot.commander.api.commanderservice.v1;
+
+option go_package = "github.com/flowshot-io/commander-api/v1;commanderservice";
+
+import "google/protobuf/timestamp.proto";
+
+service CommanderService {
+    // CreateBlenderFarmWorkflow creates a blender farm workflow.
+    rpc CreateBlenderFarmWorkflow (CreateBlenderFarmWorkflowRequest) returns (CreateBlenderFarmWorkflowResponse) {}
+
+    // GetBlenderFarmWorkflow gets a blender farm workflow.
+    rpc GetBlenderFarmWorkflow (GetBlenderFarmWorkflowRequest) returns (GetBlenderFarmWorkflowResponse) {}
+
+    // ListBlenderFarmWorkflows lists all blender farm workflows.
+    rpc ListBlenderFarmWorkflows (ListBlenderFarmWorkflowsRequest) returns (ListBlenderFarmWorkflowsResponse) {}
+
+    // CancelBlenderFarmWorkflow cancels a blender farm workflow.
+    rpc CancelBlenderFarmWorkflow (CancelBlenderFarmWorkflowRequest) returns (CancelBlenderFarmWorkflowResponse) {}
+}
+
+message RenderStatus {
+    enum Status {
+        UNKNOWN = 0;
+        PENDING = 1;
+        RUNNING = 2;
+        SUCCESS = 3;
+        FAILED = 4;
+    }
+
+    string id = 1;
+    Status status = 2;
+    string file = 3;
+}
+
+message CreateBlenderFarmWorkflowRequest {
+    string file = 1;
+    int32 start_frame = 2;
+    int32 end_frame = 3;
+    int32 BatchSize = 4;
+}
+
+message CreateBlenderFarmWorkflowResponse {
+    string id = 1;
+}
+
+message GetBlenderFarmWorkflowRequest {
+    string id = 1;
+}
+
+message GetBlenderFarmWorkflowResponse {
+    RenderStatus status = 1;
+}
+
+message ListBlenderFarmWorkflowsRequest {
+}
+
+message ListBlenderFarmWorkflowsResponse {
+    repeated RenderStatus status = 1;
+}
+
+message CancelBlenderFarmWorkflowRequest {
+    string id = 1;
+}
+
+message CancelBlenderFarmWorkflowResponse {
+}
